@@ -1,6 +1,7 @@
 [package]
 name = "lagos_logger"
 version = "0.1.0"
+edition = "2024"
 description = "A simple, colorful logging macro crate"
 license = "MIT"
 repository = "https://github.com/lhagfoss/lagos_logger"
