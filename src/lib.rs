@@ -1,3 +1,4 @@
+#[cfg(feature = "time")]
 pub use chrono::Local;
 pub use colored::*;
 
@@ -5,9 +6,15 @@ pub use colored::*;
 #[macro_export]
 macro_rules! info {
     ($($arg:tt)*) => {{
-        let current_time = $crate::Local::now().format("%H:%M:%S");
-
-        println!("{} {:>5} {}", format!("{}", current_time).dimmed(), format!("INFO").green().bold(), format!($($arg)*))
+        #[cfg(feature = "time")]
+        {
+            let current_time = $crate::Local::now().format("%H:%M:%S");
+            println!("{} {:>5} {}", format!("{}", current_time).dimmed(), format!("INFO").green().bold(), format!($($arg)*))
+        }
+        #[cfg(not(feature = "time"))]
+        {
+            println!("{:>5} {}", format!("INFO").green().bold(), format!($($arg)*))
+        }
     }};
 }
 
@@ -15,9 +22,15 @@ macro_rules! info {
 #[macro_export]
 macro_rules! warn {
     ($($arg:tt)*) => {{
-        let current_time = $crate::Local::now().format("%H:%M:%S");
-
-        println!("{} {:>5} {}", format!("{}", current_time).dimmed(), format!("WARN").yellow().bold(), format!($($arg)*))
+        #[cfg(feature = "time")]
+        {
+            let current_time = $crate::Local::now().format("%H:%M:%S");
+            println!("{} {:>5} {}", format!("{}", current_time).dimmed(), format!("WARN").yellow().bold(), format!($($arg)*))
+        }
+        #[cfg(not(feature = "time"))]
+        {
+            println!("{:>5} {}", format!("WARN").yellow().bold(), format!($($arg)*))
+        }
     }};
 }
 
@@ -25,8 +38,14 @@ macro_rules! warn {
 #[macro_export]
 macro_rules! error {
     ($($arg:tt)*) => {{
-        let current_time = $crate::Local::now().format("%H:%M:%S");
-
-        eprintln!("{} {:>5} {}", format!("{}", current_time).dimmed(), format!("ERROR").red().bold(), format!($($arg)*))
+        #[cfg(feature = "time")]
+        {
+            let current_time = $crate::Local::now().format("%H:%M:%S");
+            eprintln!("{} {:>5} {}", format!("{}", current_time).dimmed(), format!("ERROR").red().bold(), format!($($arg)*))
+        }
+        #[cfg(not(feature = "time"))]
+        {
+            eprintln!("{:>5} {}", format!("ERROR").red().bold(), format!($($arg)*))
+        }
     }};
 }
