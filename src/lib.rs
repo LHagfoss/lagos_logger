@@ -20,11 +20,11 @@ macro_rules! logger {
     }};
     (Running, $($arg:tt)*) => {{
         let time = $crate::Local::now().format("%H:%M:%S");
-        println!("{} {:>7} {}", format!("{}", time).dimmed(), "RUNNING".blue().bold(), format!($($arg)*))
+        println!("{} {:>7} {}", format!("{}", time).dimmed(), "RUNNING".green().bold(), format!($($arg)*))
     }};
     (Success, $($arg:tt)*) => {{
         let time = $crate::Local::now().format("%H:%M:%S");
-        println!("{} {:>7} {}", format!("{}", time).dimmed(), "SUCCESS".cyan().bold(), format!($($arg)*))
+        println!("{} {:>7} {}", format!("{}", time).dimmed(), "SUCCESS".green().bold(), format!($($arg)*))
     }};
 }
 
@@ -42,9 +42,9 @@ macro_rules! logger {
         eprintln!("{:>7} {}", "ERROR".red().bold(), format!($($arg)*))
     }};
     (Running, $($arg:tt)*) => {{
-        println!("{:>7} {}", "RUNNING".blue().bold(), format!($($arg)*))
+        println!("{:>7} {}", "RUNNING".green().bold(), format!($($arg)*))
     }};
     (Success, $($arg:tt)*) => {{
-        println!("{:>7} {}", "SUCCESS".cyan().bold(), format!($($arg)*))
+        println!("{:>7} {}", "SUCCESS".green().bold(), format!($($arg)*))
     }};
 }
