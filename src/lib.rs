@@ -17,7 +17,7 @@ macro_rules! logger {
         let time = $crate::Local::now().format("%Y-%m-%d %H:%M:%S");
 
         match $level {
-            $crate::Level::Info => println!("{} {} {}", "Info".bright_cyan().bold(), time, format_args!($($arg)*)),
+            $crate::Level::Info => println!("{} {} {}", "Info".bright_green().bold(), time, format_args!($($arg)*)),
             $crate::Level::Warn => println!("{} {} {}", "Warn".bright_yellow().bold(), time, format_args!($($arg)*)),
             $crate::Level::Error => eprintln!("{} {} {}", "Error".bright_red().bold(), time, format_args!($($arg)*)),
             $crate::Level::Running => println!("{} {} {}", "Running".bright_green().bold(), time, format_args!($($arg)*)),
@@ -31,7 +31,7 @@ macro_rules! logger {
 macro_rules! logger {
     ($level:expr, $($arg:tt)*) => {{
         match $level {
-            $crate::Level::Info => println!("{:>7} {}", "Info".bright_cyan().bold(), format_args!($($arg)*)),
+            $crate::Level::Info => println!("{:>7} {}", "Info".bright_green().bold(), format_args!($($arg)*)),
             $crate::Level::Warn => println!("{:>7} {}", "Warn".bright_yellow().bold(), format_args!($($arg)*)),
             $crate::Level::Error => eprintln!("{:>7} {}", "Error".bright_red().bold(), format_args!($($arg)*)),
             $crate::Level::Running => println!("{:>7} {}", "Running".bright_green().bold(), format_args!($($arg)*)),
