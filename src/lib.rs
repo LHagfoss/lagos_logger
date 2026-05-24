@@ -31,11 +31,11 @@ macro_rules! logger {
 macro_rules! logger {
     ($level:expr, $($arg:tt)*) => {{
         match $level {
-            $crate::Level::Info => println!("{:>7} {}", "Info".bright_green().bold(), format_args!($($arg)*)),
-            $crate::Level::Warn => println!("{:>7} {}", "Warn".bright_yellow().bold(), format_args!($($arg)*)),
-            $crate::Level::Error => eprintln!("{:>7} {}", "Error".bright_red().bold(), format_args!($($arg)*)),
-            $crate::Level::Running => println!("{:>7} {}", "Running".bright_green().bold(), format_args!($($arg)*)),
-            $crate::Level::Success => println!("{:>7} {}", "Success".bright_green().bold(), format_args!($($arg)*)),
+            $crate::Level::Info => println!("{:>12} {}", "Info".bright_green().bold(), format_args!($($arg)*)),
+            $crate::Level::Warn => println!("{:>12} {}", "Warn".bright_yellow().bold(), format_args!($($arg)*)),
+            $crate::Level::Error => eprintln!("{:>12} {}", "Error".bright_red().bold(), format_args!($($arg)*)),
+            $crate::Level::Running => println!("{:>12} {}", "Running".bright_green().bold(), format_args!($($arg)*)),
+            $crate::Level::Success => println!("{:>12} {}", "Success".bright_green().bold(), format_args!($($arg)*)),
         }
     }};
 }
