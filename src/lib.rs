@@ -13,6 +13,12 @@ pub enum Level {
 #[cfg(feature = "time")]
 #[macro_export]
 macro_rules! logger {
+    ($fmt:literal, $($arg:tt)*) => {{
+        $crate::logger!($crate::Level::Info, $fmt, $($arg)*)
+    }};
+    ($fmt:literal) => {{
+        $crate::logger!($crate::Level::Info, $fmt)
+    }};
     ($level:expr, $($arg:tt)*) => {{
         let time = $crate::Local::now().format("%Y-%m-%d %H:%M:%S");
 
@@ -29,6 +35,12 @@ macro_rules! logger {
 #[cfg(not(feature = "time"))]
 #[macro_export]
 macro_rules! logger {
+    ($fmt:literal, $($arg:tt)*) => {{
+        $crate::logger!($crate::Level::Info, $fmt, $($arg)*)
+    }};
+    ($fmt:literal) => {{
+        $crate::logger!($crate::Level::Info, $fmt)
+    }};
     ($level:expr, $($arg:tt)*) => {{
         match $level {
             $crate::Level::Info => println!("{:>12} {}", "Info".bright_green().bold(), format_args!($($arg)*)),
@@ -38,4 +50,17 @@ macro_rules! logger {
             $crate::Level::Success => println!("{:>12} {}", "Success".bright_green().bold(), format_args!($($arg)*)),
         }
     }};
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_logger() {
+        logger!("This is a test info message");
+        logger!("This is a test info message with arg: {}", "hello");
+        logger!(Level::Info, "This is an explicit info message");
+        logger!(Level::Warn, "This is a warn message: {}", 42);
+    }
 }

@@ -20,23 +20,26 @@ cargo add lagos_logger --no-default-features
 
 ## Usage
 
-Import the `logger!` macro and use one of the built-in log types: `Info`, `Warn`, `Error`, `Running`, or `Success`. It works just like `println!` or `format!` for variables.
+Import the `logger!` macro and use one of the built-in log types: `Info`, `Warn`, `Error`, `Running`, or `Success`. The log type is optional and defaults to `Info` if omitted. It works just like `println!` for variables and formatting.
 
 ```rust
-use lagos_logger::logger;
+use lagos_logger::{logger, Level};
 
 fn main() {
     let port = 8080;
 
-    // Use it with different log types!
-    logger!(Running, "Starting server on port {}", port);
-    logger!(Info, "Loading configuration files...");
-    logger!(Warn, "Missing optional config, using defaults");
-    logger!(Success, "Server is fully operational!");
+    // By default, omitting the log level defaults to Info:
+    logger!("Loading configuration files...");
+    logger!("Connected to database at: {}", "localhost");
+
+    // Or explicitly use other log types!
+    logger!(Level::Running, "Starting server on port {}", port);
+    logger!(Level::Warn, "Missing optional config, using defaults");
+    logger!(Level::Success, "Server is fully operational!");
 
     // Variables work seamlessly
     let error_code = 500;
-    logger!(Error, "Failed to connect: Code {}", error_code);
+    logger!(Level::Error, "Failed to connect: Code {}", error_code);
 }
 ```
 
