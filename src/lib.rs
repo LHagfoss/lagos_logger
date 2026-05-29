@@ -10,6 +10,21 @@ pub enum Level {
     Success,
 }
 
+/// A pretty, colorful logger macro.
+/// 
+/// # Usage
+/// 
+/// ```rust
+/// use lagos_logger::logger;
+/// 
+/// // Defaults to Level::Info:
+/// logger!("Hello, world!");
+/// logger!("Doing a task: {}", 42);
+/// 
+/// // Or explicitly provide a Level:
+/// use lagos_logger::Level;
+/// logger!(Level::Warn, "This is a warning!");
+/// ```
 #[cfg(feature = "time")]
 #[macro_export]
 macro_rules! logger {
@@ -20,6 +35,7 @@ macro_rules! logger {
         $crate::logger!($crate::Level::Info, $fmt)
     }};
     ($level:expr, $($arg:tt)*) => {{
+        use $crate::Colorize;
         let time = $crate::Local::now().format("%Y-%m-%d %H:%M:%S");
 
         match $level {
@@ -32,6 +48,21 @@ macro_rules! logger {
     }};
 }
 
+/// A pretty, colorful logger macro.
+/// 
+/// # Usage
+/// 
+/// ```rust
+/// use lagos_logger::logger;
+/// 
+/// // Defaults to Level::Info:
+/// logger!("Hello, world!");
+/// logger!("Doing a task: {}", 42);
+/// 
+/// // Or explicitly provide a Level:
+/// use lagos_logger::Level;
+/// logger!(Level::Warn, "This is a warning!");
+/// ```
 #[cfg(not(feature = "time"))]
 #[macro_export]
 macro_rules! logger {
@@ -42,6 +73,7 @@ macro_rules! logger {
         $crate::logger!($crate::Level::Info, $fmt)
     }};
     ($level:expr, $($arg:tt)*) => {{
+        use $crate::Colorize;
         match $level {
             $crate::Level::Info => println!("{:>12} {}", "Info".bright_green().bold(), format_args!($($arg)*)),
             $crate::Level::Warn => println!("{:>12} {}", "Warn".bright_yellow().bold(), format_args!($($arg)*)),
@@ -54,7 +86,7 @@ macro_rules! logger {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+    use crate::{logger, Level};
 
     #[test]
     fn test_logger() {
