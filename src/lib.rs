@@ -62,11 +62,11 @@ pub fn log_message(level: Level, sub_level: SubLevel, msg: &str) {
     };
 
     #[cfg(feature = "time")]
-    let time_str = format!(" {}", chrono::Local::now().format("%Y-%m-%d %H:%M:%S"));
+    let time_str = chrono::Local::now().format("%Y-%m-%d %H:%M:%S").to_string();
 
     // Calculate prefix length for dynamic wrapping alignment
     #[cfg(feature = "time")]
-    let prefix_len = 17 + time_str.len() + 1;
+    let prefix_len = time_str.len() + 1 + 17 + 1;
 
     #[cfg(not(feature = "time"))]
     let prefix_len = 18;
@@ -74,7 +74,7 @@ pub fn log_message(level: Level, sub_level: SubLevel, msg: &str) {
     let mut lines = msg.lines();
     if let Some(first) = lines.next() {
         #[cfg(feature = "time")]
-        let mut output = format!("{:>8} {:<8}{} {}", level_colored, sub_level_colored, time_str, first);
+        let mut output = format!("{} {:>8} {:<8} {}", time_str, level_colored, sub_level_colored, first);
 
         #[cfg(not(feature = "time"))]
         let mut output = format!("{:>8} {:<8} {}", level_colored, sub_level_colored, first);
