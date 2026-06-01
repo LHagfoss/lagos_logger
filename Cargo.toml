@@ -1,6 +1,6 @@
 [package]
 name = "lagos_logger"
-version = "0.2.8"
+version = "0.2.9"
 edition = "2024"
 description = "A simple, colorful logging macro crate"
 license = "MIT"
@@ -11,5 +11,6 @@ chrono = { version = "0.4.44", optional = true }
 colored = "3.1.1"
 
 [features]
-default = []
+default = ["sublevel"]
 time = ["dep:chrono"]
+sublevel = []

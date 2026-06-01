@@ -53,6 +53,7 @@ pub fn log_message(level: Level, sub_level: SubLevel, msg: &str) {
     };
 
 
+    #[cfg(feature = "sublevel")]
     let sub_level_colored = match sub_level {
         SubLevel::None => "".clear(),
         SubLevel::User => "User".bright_blue().bold(),
@@ -61,23 +62,38 @@ pub fn log_message(level: Level, sub_level: SubLevel, msg: &str) {
         SubLevel::Transaction => "Tx".bright_blue().bold(),
     };
 
+    #[cfg(not(feature = "sublevel"))]
+    let _ = sub_level;
+
     #[cfg(feature = "time")]
     let time_str = chrono::Local::now().format("%Y-%m-%d %H:%M:%S").to_string();
 
     // Calculate prefix length for dynamic wrapping alignment
-    #[cfg(feature = "time")]
+    #[cfg(all(feature = "time", feature = "sublevel"))]
     let prefix_len = time_str.len() + 1 + 17 + 1;
 
-    #[cfg(not(feature = "time"))]
+    #[cfg(all(feature = "time", not(feature = "sublevel")))]
+    let prefix_len = time_str.len() + 1 + 8 + 1;
+
+    #[cfg(all(not(feature = "time"), feature = "sublevel"))]
     let prefix_len = 18;
+
+    #[cfg(all(not(feature = "time"), not(feature = "sublevel")))]
+    let prefix_len = 9;
 
     let mut lines = msg.lines();
     if let Some(first) = lines.next() {
-        #[cfg(feature = "time")]
+        #[cfg(all(feature = "time", feature = "sublevel"))]
         let mut output = format!("{} {:>8} {:<8} {}", time_str, level_colored, sub_level_colored, first);
 
-        #[cfg(not(feature = "time"))]
+        #[cfg(all(feature = "time", not(feature = "sublevel")))]
+        let mut output = format!("{} {:>8} {}", time_str, level_colored, first);
+
+        #[cfg(all(not(feature = "time"), feature = "sublevel"))]
         let mut output = format!("{:>8} {:<8} {}", level_colored, sub_level_colored, first);
+
+        #[cfg(all(not(feature = "time"), not(feature = "sublevel")))]
+        let mut output = format!("{:>8} {}", level_colored, first);
 
         let indent = " ".repeat(prefix_len);
         for line in lines {
