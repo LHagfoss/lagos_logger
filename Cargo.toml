@@ -1,6 +1,6 @@
 [package]
 name = "lagos_logger"
-version = "0.2.9"
+version = "0.2.10"
 edition = "2024"
 description = "A simple, colorful logging macro crate"
 license = "MIT"

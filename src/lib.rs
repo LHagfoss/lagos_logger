@@ -76,10 +76,10 @@ pub fn log_message(level: Level, sub_level: SubLevel, msg: &str) {
     let prefix_len = time_str.len() + 1 + 8 + 1;
 
     #[cfg(all(not(feature = "time"), feature = "sublevel"))]
-    let prefix_len = 18;
+    let prefix_len = 22;
 
     #[cfg(all(not(feature = "time"), not(feature = "sublevel")))]
-    let prefix_len = 9;
+    let prefix_len = 13;
 
     let mut lines = msg.lines();
     if let Some(first) = lines.next() {
@@ -90,10 +90,10 @@ pub fn log_message(level: Level, sub_level: SubLevel, msg: &str) {
         let mut output = format!("{} {:>8} {}", time_str, level_colored, first);
 
         #[cfg(all(not(feature = "time"), feature = "sublevel"))]
-        let mut output = format!("{:>8} {:<8} {}", level_colored, sub_level_colored, first);
+        let mut output = format!("{:>12} {:<8} {}", level_colored, sub_level_colored, first);
 
         #[cfg(all(not(feature = "time"), not(feature = "sublevel")))]
-        let mut output = format!("{:>8} {}", level_colored, first);
+        let mut output = format!("{:>12} {}", level_colored, first);
 
         let indent = " ".repeat(prefix_len);
         for line in lines {
